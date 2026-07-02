@@ -1,17 +1,7 @@
-from app.core.exceptions.base_exception import AppException
-from app.domain.entities.interest_entity import Interest
+from app.core.exceptions.interest_exception import InterestAlreadyExistsException, InterestNotFoundException
+from app.domain.entities.interest_entity import InterestEntity
 from app.domain.repositories.interest_repository import InterestRepository
 from app.schemas.interest_schema import InterestCreate, InterestUpdate
-
-
-class InterestNotFoundException(AppException):
-    def __init__(self):
-        super().__init__(status_code=404, message="Interest not found")
-
-
-class InterestAlreadyExistsException(AppException):
-    def __init__(self):
-        super().__init__(status_code=400, message="Interest with this code already exists")
 
 
 class InterestService:
@@ -19,14 +9,14 @@ class InterestService:
     def __init__(self, repository: InterestRepository):
         self.repository = repository
 
-    def create(self, request: InterestCreate) -> Interest:
+    def create(self, request: InterestCreate) -> InterestEntity:
         existing = self.repository.get_all()
         
         for interest in existing:
             if interest.code == request.code:
                 raise InterestAlreadyExistsException()
 
-        interest = Interest(
+        interest = InterestEntity(
             id=None,
             name=request.name,
             code=request.code,
@@ -34,10 +24,10 @@ class InterestService:
 
         return self.repository.create(interest)
 
-    def get_all(self) -> list[Interest]:
+    def get_all(self) -> list[InterestEntity]:
         return self.repository.get_all()
 
-    def get_by_id(self, id: int) -> Interest:
+    def get_by_id(self, id: int) -> InterestEntity:
         interest = self.repository.get_by_id(id)
 
         if interest is None:
@@ -45,7 +35,7 @@ class InterestService:
 
         return interest
 
-    def update(self, id: int, request: InterestUpdate) -> Interest:
+    def update(self, id: int, request: InterestUpdate) -> InterestEntity:
         interest = self.repository.get_by_id(id)
 
         if interest is None:

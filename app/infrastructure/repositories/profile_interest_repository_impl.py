@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.domain.entities.interest_entity import Interest
+from app.domain.entities.interest_entity import InterestEntity
 from app.domain.repositories.profile_interest_repository import ProfileInterestRepository
 from app.infrastructure.db.models.profile_interest_model import ProfileInterestModel
 from app.infrastructure.db.models.interest_model import InterestModel
@@ -37,7 +37,7 @@ class ProfileInterestRepositoryImpl(ProfileInterestRepository):
         
         self.db.commit()
 
-    def get_profile_interests(self, profile_id: int) -> list[Interest]:
+    def get_profile_interests(self, profile_id: int) -> list[InterestEntity]:
         results = (
             self.db.query(InterestModel)
             .join(ProfileInterestModel, ProfileInterestModel.interest_id == InterestModel.id)
@@ -46,7 +46,7 @@ class ProfileInterestRepositoryImpl(ProfileInterestRepository):
         )
         
         return [
-            Interest(
+            InterestEntity(
                 id=interest.id,
                 name=interest.name,
                 code=interest.code

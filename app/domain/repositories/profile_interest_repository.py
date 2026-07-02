@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.domain.entities.interest_entity import Interest
+from app.domain.entities.interest_entity import InterestEntity
 
 
 class ProfileInterestRepository(ABC):
@@ -13,7 +13,7 @@ class ProfileInterestRepository(ABC):
         pass
 
     @abstractmethod
-    def get_profile_interests(self, profile_id: int) -> list[Interest]:
+    def get_profile_interests(self, profile_id: int) -> list[InterestEntity]:
         pass
 
     @abstractmethod

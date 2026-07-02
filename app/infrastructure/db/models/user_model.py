@@ -16,3 +16,9 @@ class UserModel(Base, TimestampMixin):
         back_populates="user",
         uselist=False,
     )
+    
+    address = relationship(
+        "AddressModel",
+        back_populates="user",
+        uselist=True,
+    )

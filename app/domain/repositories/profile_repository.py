@@ -1,18 +1,18 @@
 from abc import ABC, abstractmethod
-from app.domain.entities.profile_entity import Profile
+from app.domain.entities.profile_entity import ProfileEntity
 
 class ProfileRepository(ABC):
 
     @abstractmethod
-    def create(self, profile: Profile, interest_ids: list[int] | None = None) -> Profile:
+    def create(self, profile: ProfileEntity, interest_ids: list[int] | None = None) -> ProfileEntity:
         pass
 
     @abstractmethod
-    def get_by_user_id(self, user_id: int) -> Profile | None:
+    def get_by_user_id(self, user_id: int) -> ProfileEntity | None:
         pass
 
     @abstractmethod
-    def update(self, profile: Profile, interest_ids: list[int] | None = None) -> Profile:
+    def update(self, profile: ProfileEntity, interest_ids: list[int] | None = None) -> ProfileEntity:
         pass
     
     @abstractmethod

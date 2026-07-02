@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
-from app.domain.entities.user_entity import User
+from app.domain.entities.user_entity import UserEntity
 
 class UserRepository(ABC):
     @abstractmethod
-    def save(self, user: User) -> User:
+    def save(self, user: UserEntity) -> UserEntity:
         pass
 
     @abstractmethod
-    def get_by_id(self, user_id: int) -> User | None:
+    def get_by_id(self, user_id: int) -> UserEntity | None:
         pass
 
     @abstractmethod
-    def get_by_email(self, email: str) -> User | None:
+    def get_by_email(self, email: str) -> UserEntity | None:
         pass

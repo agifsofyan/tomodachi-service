@@ -3,7 +3,9 @@ from fastapi.security import HTTPAuthorizationCredentials
 from jose import ExpiredSignatureError, JWTError
 from sqlalchemy.orm import Session
 from app.application.services.me_service import UserService
+from app.application.services.profile.address_service import AddressService
 from app.infrastructure.database.session import get_db
+from app.infrastructure.repositories.address_repository_impl import AddressRepositoryImpl
 from app.infrastructure.repositories.user_repository_impl import UserRepositoryImpl
 from app.infrastructure.repositories.profile_repository_impl import ProfileRepositoryImpl
 from app.infrastructure.repositories.interest_repository_impl import InterestRepositoryImpl
@@ -80,19 +82,7 @@ def get_register_service(
         token_service=token_service
     )
     
-def get_create_profile_service(
-    db: Session = Depends(get_db), 
-) -> ProfileService:
-    repository = ProfileRepositoryImpl(db)
-    return ProfileService(repository)
-
-def get_update_profile_service(
-    db: Session = Depends(get_db), 
-) -> ProfileService:
-    repository = ProfileRepositoryImpl(db)
-    return ProfileService(repository)
-
-def get_delete_profile_service(
+def get_profile_service(
     db: Session = Depends(get_db), 
 ) -> ProfileService:
     repository = ProfileRepositoryImpl(db)
@@ -104,13 +94,21 @@ def get_interest_service(
     repository = InterestRepositoryImpl(db)
     return InterestService(repository)
 
+def get_address_service(
+    db: Session = Depends(get_db), 
+) -> AddressService:
+    repository = AddressRepositoryImpl(db)
+    return AddressService(repository)
+
 def get_me_service(
     db: Session = Depends(get_db),
 ) -> UserService:
     user_repository = UserRepositoryImpl(db)
     profile_repository = ProfileRepositoryImpl(db)
+    address_repository = AddressRepositoryImpl(db)
 
     return UserService(
         user_repository=user_repository,
         profile_repository=profile_repository,
+        address_repository=address_repository,
     )

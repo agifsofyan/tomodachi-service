@@ -10,10 +10,24 @@ from .user_exception import (
     EmailAlreadyExistsException,
 )
 
+from .interest_exception import (
+    InterestNotFoundException,
+    InterestAlreadyExistsException,
+)
+
+from .address_exception import (
+    AddressNotFoundException,
+    AddressAlreadyExistsException,
+)
+
 __all__ = [
     "AppException",
     "ProfileAlreadyExistsException",
     "ProfileNotFoundException",
     "UserNotFoundException",
     "EmailAlreadyExistsException",
+    "InterestNotFoundException",
+    "InterestAlreadyExistsException",
+    "AddressNotFoundException",
+    "AddressAlreadyExistsException",
 ]

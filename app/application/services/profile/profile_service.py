@@ -1,4 +1,4 @@
-from app.domain.entities.profile_entity import Profile
+from app.domain.entities.profile_entity import ProfileEntity
 from app.domain.repositories.profile_repository import ProfileRepository
 from app.core.exceptions.profile_exception import ProfileAlreadyExistsException, ProfileNotFoundException
 from app.schemas.user.profile_schema import ProfileCreate, ProfileUpdate
@@ -13,14 +13,14 @@ class ProfileService:
         self,
         user_id: int,
         request: ProfileCreate
-    ) -> Profile:
+    ) -> ProfileEntity:
 
         existing = self.repository.get_by_user_id(user_id)
 
         if existing is not None:
             raise ProfileAlreadyExistsException()
 
-        profile = Profile(
+        profile = ProfileEntity(
             id=None,
             user_id=user_id,
             gender=request.gender,
@@ -31,7 +31,7 @@ class ProfileService:
 
         return self.repository.create(profile, interest_ids=request.interests)
 
-    def get_by_user_id(self, user_id: int) -> Profile:
+    def get_by_user_id(self, user_id: int) -> ProfileEntity:
 
         profile = self.repository.get_by_user_id(user_id)
 
@@ -44,7 +44,7 @@ class ProfileService:
         self,
         user_id: int,
         request: ProfileUpdate
-    ) -> Profile:
+    ) -> ProfileEntity:
 
         profile = self.repository.get_by_user_id(user_id)
 

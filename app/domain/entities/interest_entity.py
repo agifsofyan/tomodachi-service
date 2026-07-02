@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class Interest:
+class InterestEntity:
     id: int | None
     name: str
     code: str

@@ -1,4 +1,4 @@
-from app.domain.entities.interest_entity import Interest
+from app.domain.entities.interest_entity import InterestEntity
 from app.domain.repositories.interest_repository import InterestRepository
 from sqlalchemy.orm import Session
 
@@ -9,7 +9,7 @@ class InterestRepositoryImpl(InterestRepository):
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, interest: Interest) -> Interest:
+    def create(self, interest: InterestEntity) -> InterestEntity:
         db_interest = InterestModel(
             name=interest.name,
             code=interest.code,
@@ -18,13 +18,13 @@ class InterestRepositoryImpl(InterestRepository):
         self.db.commit()
         self.db.refresh(db_interest)
         
-        return Interest(
+        return InterestEntity(
             id=db_interest.id,
             name=db_interest.name,
             code=db_interest.code,           
         )
         
-    def get_by_id(self, id: int) -> Interest | None:
+    def get_by_id(self, id: int) -> InterestEntity | None:
         interest_model = (
             self.db.query(InterestModel)
             .filter(InterestModel.id == id)
@@ -34,13 +34,13 @@ class InterestRepositoryImpl(InterestRepository):
         if interest_model is None:
             return None
 
-        return Interest(
+        return InterestEntity(
             id=interest_model.id,
             name=interest_model.name,
             code=interest_model.code,
         )
     
-    def get_by_profile_id(self, profile_id: int) -> list[Interest]:
+    def get_by_profile_id(self, profile_id: int) -> list[InterestEntity]:
         profile_interests = (
             self.db.query(ProfileInterestModel)
             .filter(ProfileInterestModel.profile_id == profile_id)
@@ -59,7 +59,7 @@ class InterestRepositoryImpl(InterestRepository):
         )
         
         return [
-            Interest(
+            InterestEntity(
                 id=interest.id,
                 name=interest.name,
                 code=interest.code,
@@ -67,11 +67,11 @@ class InterestRepositoryImpl(InterestRepository):
             for interest in interests
         ]
     
-    def get_all(self) -> list[Interest]:
+    def get_all(self) -> list[InterestEntity]:
         interests = self.db.query(InterestModel).all()
         
         return [
-            Interest(
+            InterestEntity(
                 id=interest.id,
                 name=interest.name,
                 code=interest.code,
@@ -79,7 +79,7 @@ class InterestRepositoryImpl(InterestRepository):
             for interest in interests
         ]
 
-    def update(self, interest: Interest) -> Interest:
+    def update(self, interest: InterestEntity) -> InterestEntity:
         interest_model = (
             self.db.query(InterestModel)
             .filter(InterestModel.id == interest.id)
@@ -87,7 +87,7 @@ class InterestRepositoryImpl(InterestRepository):
         )
 
         if interest_model is None:
-            raise ValueError("Interest not found")
+            raise ValueError("InterestEntity not found")
 
         interest_model.name = interest.name
         interest_model.code = interest.code
@@ -95,7 +95,7 @@ class InterestRepositoryImpl(InterestRepository):
         self.db.commit()
         self.db.refresh(interest_model)
 
-        return Interest(
+        return InterestEntity(
             id=interest_model.id,
             name=interest_model.name,
             code=interest_model.code,

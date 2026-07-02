@@ -1,5 +1,5 @@
 from app.core.exceptions.user_exception import UserAlreadyExistsException
-from app.domain.entities.user_entity import User
+from app.domain.entities.user_entity import UserEntity
 from app.schemas.auth_schema import RegisterRequest, AuthResponse
 from app.core.security import hash_password
 
@@ -15,8 +15,8 @@ class RegisterService:
             raise UserAlreadyExistsException()
 
         hashed_password = hash_password(request.password)
-        new_user = User(
-            id=None, 
+        new_user = UserEntity(
+            id=None,  # type: ignore
             name=request.name, 
             email=request.email, 
             password=hashed_password
