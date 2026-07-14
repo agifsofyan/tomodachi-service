@@ -2,9 +2,6 @@
 
 set -e
 
-# echo "Running migrations..."
-# alembic upgrade head
-
 echo "Starting FastAPI..."
 
 exec uv run uvicorn app.main:app \
