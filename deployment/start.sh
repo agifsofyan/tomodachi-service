@@ -2,8 +2,8 @@
 
 set -e
 
-echo "Running migrations..."
-alembic upgrade head
+# echo "Running migrations..."
+# alembic upgrade head
 
 echo "Starting FastAPI..."
 
