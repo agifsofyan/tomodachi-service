@@ -1,5 +1,5 @@
 [project]
-name = "py-fastapi"
+name = "tomodachi-service"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -7,7 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.18.4",
     "bcrypt>=5.0.0",
-    "fastapi>=0.138.0",
+    "fastapi[standard]>=0.138.0",
     "psycopg2>=2.9.12",
     "pwdlib[argon2]>=0.3.0",
     "pydantic-settings>=2.14.2",
