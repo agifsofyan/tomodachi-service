@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from app.domain.entities.interest_entity import InterestEntity
 from app.domain.entities.profile_entity import ProfileEntity
 from app.domain.repositories.profile_repository import ProfileRepository
@@ -9,8 +11,9 @@ class ProfileRepositoryImpl(ProfileRepository):
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, profile: ProfileEntity, interest_ids: list[int] | None = None) -> ProfileEntity:
+    def create(self, profile: ProfileEntity, interest_ids: list[UUID] | None = None) -> ProfileEntity:
         db_profile = ProfileModel(
+            id=profile.id,
             gender=profile.gender,
             user_id=profile.user_id,
             birth_date=profile.birth_date,
@@ -51,7 +54,7 @@ class ProfileRepositoryImpl(ProfileRepository):
             interests=interests               
         )
         
-    def get_by_user_id(self, user_id: int) -> ProfileEntity | None:
+    def get_by_user_id(self, user_id: UUID) -> ProfileEntity | None:
         profile_model = (
             self.db.query(ProfileModel)
             .options(joinedload(ProfileModel.interests))
@@ -79,7 +82,7 @@ class ProfileRepositoryImpl(ProfileRepository):
             interests=interests  # ← ADD THIS
     )
 
-    def update(self, profile: ProfileEntity, interest_ids: list[int] | None = None) -> ProfileEntity:
+    def update(self, profile: ProfileEntity, interest_ids: list[UUID] | None = None) -> ProfileEntity:
         profile_model = (
             self.db.query(ProfileModel)
             .filter(ProfileModel.id == profile.id)
@@ -130,7 +133,7 @@ class ProfileRepositoryImpl(ProfileRepository):
             interests=interests
         )
 
-    def delete(self, user_id: int) -> None:
+    def delete(self, user_id: UUID) -> None:
         profile = (
             self.db.query(ProfileModel)
             .filter(ProfileModel.user_id == user_id)

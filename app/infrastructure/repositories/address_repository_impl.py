@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy.orm import Session
 from app.domain.entities.address_entity import AddressEntity
 from app.domain.repositories.address_repository import AddressRepository
@@ -9,6 +11,7 @@ class AddressRepositoryImpl(AddressRepository):
 
     def create(self, address: AddressEntity) -> AddressEntity:
         db_address = AddressModel(
+            id=address.id,
             user_id=address.user_id,
             province_code=address.province_code,
             province_name=address.province_name,
@@ -40,7 +43,7 @@ class AddressRepositoryImpl(AddressRepository):
             postal_code=db_address.postal_code,       
         )
         
-    def get_by_user_id(self, user_id: int) -> list[AddressEntity]:
+    def get_by_user_id(self, user_id: UUID) -> list[AddressEntity]:
         address_model = (
             self.db.query(AddressModel)
             .filter(AddressModel.user_id == user_id)
@@ -65,7 +68,7 @@ class AddressRepositoryImpl(AddressRepository):
             for address in address_model
         ]
         
-    def get_by_id(self, id: int) -> AddressEntity | None:
+    def get_by_id(self, id: UUID) -> AddressEntity | None:
         address_model = (
             self.db.query(AddressModel)
             .filter(AddressModel.id == id)
@@ -124,7 +127,7 @@ class AddressRepositoryImpl(AddressRepository):
             postal_code=address_model.postal_code,   
         )
 
-    def delete(self, user_id: int) -> None:
+    def delete(self, user_id: UUID) -> None:
         profile = (
             self.db.query(AddressModel)
             .filter(AddressModel.user_id == user_id)

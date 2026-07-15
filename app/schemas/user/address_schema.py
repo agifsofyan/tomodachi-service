@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict, Field
 
 class AddressBase(BaseModel):
@@ -14,7 +16,24 @@ class AddressBase(BaseModel):
         min_length=5,
         max_length=5,
         pattern=r"^\d{5}$",    
-    )      # Kode POS
+    ) # Kode POS
+    
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "province_code": "33",
+                "province_name": "Jawa Tengah",
+                "regency_code": "33.09",
+                "regency_name": "Kabupaten Boyolali",
+                "subdistrict_code": "33.09.14",
+                "subdistrict_name": "Karanggede",
+                "village_code": "33.09.14.2006",
+                "village_name": "Tegalsari",
+                "full_address": "Tegalsari RT/RW 01/03, Kec. Karanggede, Kab. Boyolali",
+                "postal_code": "57381"
+            }
+        }
+    )
 
 
 class AddressCreate(AddressBase):
@@ -35,6 +54,6 @@ class AddressUpdate(BaseModel):
 
 
 class AddressResponse(AddressBase):
-    id: int
+    id: UUID
 
     model_config = ConfigDict(from_attributes=True)

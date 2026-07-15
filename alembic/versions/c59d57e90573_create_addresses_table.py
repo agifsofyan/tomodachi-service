@@ -1,19 +1,19 @@
-"""create addresses_table
+"""Create addresses Table
 
-Revision ID: 140000047227
-Revises: 51345ebf2e1d
-Create Date: 2026-07-03 10:04:10.411829
+Revision ID: c59d57e90573
+Revises: 3a81b802007e
+Create Date: 2026-07-15 09:12:58.432675
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '140000047227'
-down_revision: Union[str, Sequence[str], None] = '51345ebf2e1d'
+revision: str = 'c59d57e90573'
+down_revision: Union[str, Sequence[str], None] = '3a81b802007e'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -24,21 +24,24 @@ def upgrade() -> None:
         "addresses",
         sa.Column(
             "id",
-            sa.Integer(),
+            postgresql.UUID(as_uuid=True),
             primary_key=True,
+            server_default=sa.text("gen_random_uuid()"),
+            nullable=False,
         ),
         sa.Column(
             "user_id",
-            sa.Integer(),
+            postgresql.UUID(as_uuid=True),
             sa.ForeignKey(
                 "users.id",
                 ondelete="CASCADE",
             ),
             nullable=False,
+            unique=True,
         ),
         sa.Column(
             "province_code",
-            sa.String(),
+            sa.String(100),
             nullable=False,
         ),
         sa.Column(
@@ -48,7 +51,7 @@ def upgrade() -> None:
         ),
         sa.Column(
             "regency_code",
-            sa.String(),
+            sa.String(100),
             nullable=False,
         ),
         sa.Column(
@@ -58,7 +61,7 @@ def upgrade() -> None:
         ),
         sa.Column(
             "subdistrict_code",
-            sa.String(),
+            sa.String(100),
             nullable=False,
         ),
         sa.Column(
@@ -68,7 +71,7 @@ def upgrade() -> None:
         ),
         sa.Column(
             "village_code",
-            sa.String(),
+            sa.String(100),
             nullable=False,
         ),
         sa.Column(

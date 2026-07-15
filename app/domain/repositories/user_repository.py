@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 from app.domain.entities.user_entity import UserEntity
 
 class UserRepository(ABC):
@@ -7,7 +8,7 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, user_id: int) -> UserEntity | None:
+    def get_by_id(self, user_id: UUID) -> UserEntity | None:
         pass
 
     @abstractmethod

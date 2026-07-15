@@ -1,19 +1,19 @@
-"""create profiles_interests_table
+"""Create profiles_interests Table
 
-Revision ID: 51345ebf2e1d
-Revises: 890a25ffcb02
-Create Date: 2026-07-01 09:21:24.899810
+Revision ID: a34968e6fdce
+Revises: e4a2e37f011b
+Create Date: 2026-07-15 09:14:33.799935
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '51345ebf2e1d'
-down_revision: Union[str, Sequence[str], None] = '890a25ffcb02'
+revision: str = 'a34968e6fdce'
+down_revision: Union[str, Sequence[str], None] = 'e4a2e37f011b'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -24,15 +24,21 @@ def upgrade() -> None:
         "profiles_interests",
         sa.Column(
             "profile_id",
-            sa.Integer(),
-            sa.ForeignKey("profiles.id", ondelete="CASCADE"),
-            primary_key=True,
+            postgresql.UUID(as_uuid=True),
+            sa.ForeignKey(
+                "profiles.id",
+                ondelete="CASCADE",
+            ),
+            nullable=False,
         ),
         sa.Column(
             "interest_id",
-            sa.Integer(),
-            sa.ForeignKey("interests.id", ondelete="CASCADE"),
-            primary_key=True,
+            postgresql.UUID(as_uuid=True),
+            sa.ForeignKey(
+                "interests.id",
+                ondelete="CASCADE",
+            ),
+            nullable=False,
         ),
         sa.Column(
             "created_at",
@@ -45,6 +51,12 @@ def upgrade() -> None:
             sa.DateTime(timezone=True),
             nullable=False,
             server_default=sa.func.now(),
+        ),
+        
+        sa.PrimaryKeyConstraint(
+            "profile_id",
+            "interest_id",
+            name="pk_profiles_interests",
         ),
     )
     
@@ -64,12 +76,12 @@ def upgrade() -> None:
 def downgrade() -> None:
     """Downgrade schema."""
     op.drop_index(
-        "ix_profiles_interests_interest_id",
+        "ix_profiles_interests_profile_id",
         table_name="profiles_interests",
     )
-
+    
     op.drop_index(
-        "ix_profiles_interests_profile_id",
+        "ix_profiles_interests_interest_id",
         table_name="profiles_interests",
     )
 

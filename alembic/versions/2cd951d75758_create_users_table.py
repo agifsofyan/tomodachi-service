@@ -1,19 +1,20 @@
-"""create users table
+"""Create users Table
 
-Revision ID: 4c4bf4bf7f2b
-Revises: 
-Create Date: 2026-06-23 14:33:46.839393
+Revision ID: 2cd951d75758
+Revises: d7fb9e878f3f
+Create Date: 2026-07-15 09:11:03.085838
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4c4bf4bf7f2b'
-down_revision: Union[str, Sequence[str], None] = None
+revision: str = '2cd951d75758'
+down_revision: Union[str, Sequence[str], None] = 'd7fb9e878f3f'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -22,8 +23,14 @@ def upgrade() -> None:
     """Upgrade schema."""
     op.create_table(
         "users",
-        sa.Column("id", sa.Integer(), primary_key=True, autoincrement=True),
-        sa.Column("name", sa.String(10), nullable=False),
+        sa.Column(
+            "id",
+            postgresql.UUID(as_uuid=True),
+            primary_key=True,
+            server_default=sa.text("gen_random_uuid()"),
+            nullable=False,
+        ),
+        sa.Column("name", sa.String(100), nullable=False),
         sa.Column("email", sa.String(100), nullable=False, unique=True, index=True),
         sa.Column("password", sa.String(255), nullable=False),
         sa.Column(

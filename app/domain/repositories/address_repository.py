@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 from app.domain.entities.address_entity import AddressEntity
 
 class AddressRepository(ABC):
@@ -8,11 +9,11 @@ class AddressRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_user_id(self, user_id: int) -> list[AddressEntity]:
+    def get_by_user_id(self, user_id: UUID) -> list[AddressEntity]:
         pass
     
     @abstractmethod
-    def get_by_id(self, id: int) -> AddressEntity | None:
+    def get_by_id(self, id: UUID) -> AddressEntity | None:
         pass
 
     @abstractmethod
@@ -20,5 +21,5 @@ class AddressRepository(ABC):
         pass
     
     @abstractmethod
-    def delete(self, id: int) -> None:
+    def delete(self, id: UUID) -> None:
         pass

@@ -1,9 +1,10 @@
+from uuid import UUID
+
 from app.domain.entities.interest_entity import InterestEntity
 from app.domain.repositories.interest_repository import InterestRepository
 from sqlalchemy.orm import Session
 
 from app.infrastructure.db.models.interest_model import InterestModel
-from app.infrastructure.db.models.profile_interest_model import ProfileInterestModel
 
 class InterestRepositoryImpl(InterestRepository):
     def __init__(self, db: Session):
@@ -11,6 +12,7 @@ class InterestRepositoryImpl(InterestRepository):
 
     def create(self, interest: InterestEntity) -> InterestEntity:
         db_interest = InterestModel(
+            id=interest.id,
             name=interest.name,
             code=interest.code,
         )
@@ -24,7 +26,7 @@ class InterestRepositoryImpl(InterestRepository):
             code=db_interest.code,           
         )
         
-    def get_by_id(self, id: int) -> InterestEntity | None:
+    def get_by_id(self, id: UUID) -> InterestEntity | None:
         interest_model = (
             self.db.query(InterestModel)
             .filter(InterestModel.id == id)
@@ -40,21 +42,10 @@ class InterestRepositoryImpl(InterestRepository):
             code=interest_model.code,
         )
     
-    def get_by_profile_id(self, profile_id: int) -> list[InterestEntity]:
-        profile_interests = (
-            self.db.query(ProfileInterestModel)
-            .filter(ProfileInterestModel.profile_id == profile_id)
-            .all()
-        )
-        
-        interest_ids = [pi.interest_id for pi in profile_interests]
-        
-        if not interest_ids:
-            return []
-        
+    def get_by_ids(self, ids: list[UUID]) -> list[InterestEntity]:
         interests = (
             self.db.query(InterestModel)
-            .filter(InterestModel.id.in_(interest_ids))
+            .filter(InterestModel.id.in_(ids))
             .all()
         )
         
@@ -101,7 +92,7 @@ class InterestRepositoryImpl(InterestRepository):
             code=interest_model.code,
         )
 
-    def delete(self, id: int) -> None:
+    def delete(self, id: UUID) -> None:
         interest_model = (
             self.db.query(InterestModel)
             .filter(InterestModel.id == id)

@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from uuid import UUID
 
 @dataclass
 class AddressEntity:
-    id: int | None
-    user_id: int
+    id: UUID
+    user_id: UUID
     province_code: str
     province_name: str
     regency_code: str

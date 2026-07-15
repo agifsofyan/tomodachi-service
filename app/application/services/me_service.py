@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from app.core.exceptions.user_exception import UserNotFoundException
 from app.domain.repositories.address_repository import AddressRepository
 from app.domain.repositories.profile_repository import ProfileRepository
@@ -19,7 +21,7 @@ class UserService:
         self.profile_repository = profile_repository
         self.address_repository = address_repository
 
-    def me(self, user_id: int, include_address: bool) -> UserWithProfileAndAddressResponse:
+    def me(self, user_id: UUID, include_address: bool) -> UserWithProfileAndAddressResponse:
         user = self.user_repository.get_by_id(user_id)
 
         if user is None:

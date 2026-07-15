@@ -1,5 +1,6 @@
 from datetime import date
-from sqlalchemy import String, Date, ForeignKey, ARRAY
+import uuid
+from sqlalchemy import String, Date, ForeignKey, ARRAY, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.infrastructure.db.base import Base
 from app.infrastructure.db.mixins.timestamp_mixin import TimestampMixin
@@ -13,8 +14,8 @@ if TYPE_CHECKING:
 class ProfileModel(Base, TimestampMixin):
     __tablename__ = "profiles"
     
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True, nullable=False, index=True)
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("users.id"), unique=True, nullable=False, index=True)
     gender: Mapped[Gender] = mapped_column(String(1), nullable=False)
     birth_date: Mapped[date|None] = mapped_column(Date, nullable=True)
     hobbies: Mapped[list[str]] = mapped_column(ARRAY(String), default=list)

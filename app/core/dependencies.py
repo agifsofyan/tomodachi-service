@@ -56,7 +56,7 @@ def get_current_user(
         )
 
     repository = UserRepositoryImpl(db)
-    user = repository.get_by_id(int(user_id))
+    user = repository.get_by_id(user_id)
 
     if user is None:
         raise HTTPException(
@@ -88,7 +88,8 @@ def get_profile_service(
     db: Session = Depends(get_db), 
 ) -> ProfileService:
     repository = ProfileRepositoryImpl(db)
-    return ProfileService(repository)
+    interestRepository = InterestRepositoryImpl(db)
+    return ProfileService(repository, interestRepository)
 
 def get_interest_service(
     db: Session = Depends(get_db),

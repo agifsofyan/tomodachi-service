@@ -1,5 +1,7 @@
 
 
+from uuid import UUID, uuid4
+
 from app.core.exceptions.address_exception import AddressNotFoundException
 from app.domain.entities.address_entity import AddressEntity
 from app.domain.repositories.address_repository import AddressRepository
@@ -13,12 +15,12 @@ class AddressService:
 
     def create(
         self,
-        user_id: int,
+        user_id: UUID,
         request: AddressCreate
     ) -> AddressEntity:
 
         address = AddressEntity(
-            id=None,
+            id=uuid4(),
             user_id=user_id,
             province_code=request.province_code,
             province_name=request.province_name,
@@ -34,7 +36,7 @@ class AddressService:
 
         return self.repository.create(address)
 
-    def get_by_id(self, id: int) -> AddressEntity:
+    def get_by_id(self, id: UUID) -> AddressEntity:
 
         address = self.repository.get_by_id(id)
 
@@ -43,7 +45,7 @@ class AddressService:
 
         return address
     
-    def get_by_user_id(self, user_id: int) -> list[AddressEntity]:
+    def get_by_user_id(self, user_id: UUID) -> list[AddressEntity]:
 
         addresses = self.repository.get_by_user_id(user_id)
 
@@ -51,7 +53,7 @@ class AddressService:
 
     def update(
         self,
-        user_id: int,
+        user_id: UUID,
         request: AddressUpdate
     ) -> AddressEntity:
 
@@ -92,6 +94,6 @@ class AddressService:
 
         return self.repository.update(address)
 
-    def delete(self, user_id: int) -> None:
+    def delete(self, user_id: UUID) -> None:
 
         self.repository.delete(user_id)

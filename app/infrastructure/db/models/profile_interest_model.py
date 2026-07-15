@@ -1,4 +1,6 @@
-from sqlalchemy import ForeignKey, Integer
+import uuid
+
+from sqlalchemy import ForeignKey, Integer, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 
@@ -12,14 +14,14 @@ if TYPE_CHECKING:
 class ProfileInterestModel(Base):
     __tablename__ = "profiles_interests"
 
-    profile_id: Mapped[int] = mapped_column(
-        Integer,
+    profile_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
         ForeignKey("profiles.id", ondelete="CASCADE"),
         primary_key=True,
     )
 
-    interest_id: Mapped[int] = mapped_column(
-        Integer,
+    interest_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
         ForeignKey("interests.id", ondelete="CASCADE"),
         primary_key=True,
     )

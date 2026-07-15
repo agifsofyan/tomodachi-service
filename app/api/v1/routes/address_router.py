@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.application.services.profile.address_service import AddressService
 from app.core.dependencies import get_address_service, get_current_user
@@ -30,14 +32,14 @@ def get_addresses(
 
 @router.get("/{id}")
 def get_address(
-    id: int,
+    id: UUID,
     service: AddressService = Depends(get_address_service),
 ):
     return service.get_by_id(id)
 
 @router.put("/{id}", response_model=AddressResponse)
 def update_address(
-    id: int,
+    id: UUID,
     request: AddressUpdate,
     service: AddressService = Depends(get_address_service),
 ):
@@ -51,7 +53,7 @@ def update_address(
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_profile(
-    id: int,
+    id: UUID,
     service: AddressService = Depends(get_address_service),
 ):
     if id is None:

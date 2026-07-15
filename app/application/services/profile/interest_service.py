@@ -1,3 +1,5 @@
+from uuid import UUID, uuid4
+
 from app.core.exceptions.interest_exception import InterestAlreadyExistsException, InterestNotFoundException
 from app.domain.entities.interest_entity import InterestEntity
 from app.domain.repositories.interest_repository import InterestRepository
@@ -17,7 +19,7 @@ class InterestService:
                 raise InterestAlreadyExistsException()
 
         interest = InterestEntity(
-            id=None,
+            id=uuid4(),
             name=request.name,
             code=request.code,
         )
@@ -27,7 +29,7 @@ class InterestService:
     def get_all(self) -> list[InterestEntity]:
         return self.repository.get_all()
 
-    def get_by_id(self, id: int) -> InterestEntity:
+    def get_by_id(self, id: UUID) -> InterestEntity:
         interest = self.repository.get_by_id(id)
 
         if interest is None:
@@ -35,7 +37,7 @@ class InterestService:
 
         return interest
 
-    def update(self, id: int, request: InterestUpdate) -> InterestEntity:
+    def update(self, id: UUID, request: InterestUpdate) -> InterestEntity:
         interest = self.repository.get_by_id(id)
 
         if interest is None:
@@ -49,7 +51,7 @@ class InterestService:
 
         return self.repository.update(interest)
 
-    def delete(self, id: int) -> None:
+    def delete(self, id: UUID) -> None:
         interest = self.repository.get_by_id(id)
 
         if interest is None:

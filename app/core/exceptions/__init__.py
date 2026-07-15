@@ -12,6 +12,7 @@ from .user_exception import (
 
 from .interest_exception import (
     InterestNotFoundException,
+    InterestsNotFoundException,
     InterestAlreadyExistsException,
 )
 
@@ -27,6 +28,7 @@ __all__ = [
     "UserNotFoundException",
     "EmailAlreadyExistsException",
     "InterestNotFoundException",
+    "InterestsNotFoundException",
     "InterestAlreadyExistsException",
     "AddressNotFoundException",
     "AddressAlreadyExistsException",

@@ -1,5 +1,6 @@
 from datetime import date
 from enum import Enum
+from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -15,7 +16,7 @@ class ProfileBase(BaseModel):
     gender: Gender
     birth_date: date | None
     hobbies: list[str] = Field(default_factory=list, max_length=20)
-    interests: list[int] = Field(default_factory=list, max_length=50)
+    interests: list[UUID] = Field(default_factory=list, max_length=50)
     phone_numbers: list[str] = Field(default_factory=list, max_length=5)
     
     @field_validator('hobbies')
@@ -45,12 +46,12 @@ class ProfileUpdate(BaseModel):
     gender: Gender | None = None
     birth_date: date | None = None
     hobbies: list[str] | None = None
-    interests: list[int] | None = None
+    interests: list[UUID] | None = None
     phone_numbers: list[str] | None = None
 
 
 class ProfileResponse(ProfileBase):
-    id: int
+    id: UUID
 
     # Override field dari ProfileBase
     interests: list[InterestResponse] = Field(default_factory=list)

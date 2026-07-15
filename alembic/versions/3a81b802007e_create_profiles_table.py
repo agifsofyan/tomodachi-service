@@ -1,8 +1,8 @@
-"""create profiles table
+"""Create profiles Table
 
-Revision ID: b014fbebc10e
-Revises: c70c4dd80336
-Create Date: 2026-06-29 15:27:24.175251
+Revision ID: 3a81b802007e
+Revises: 2cd951d75758
+Create Date: 2026-07-15 09:12:07.612478
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = 'b014fbebc10e'
-down_revision: Union[str, Sequence[str], None] = 'c70c4dd80336'
+revision: str = '3a81b802007e'
+down_revision: Union[str, Sequence[str], None] = '2cd951d75758'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -25,12 +25,14 @@ def upgrade() -> None:
         "profiles",
         sa.Column(
             "id",
-            sa.Integer(),
+            postgresql.UUID(as_uuid=True),
             primary_key=True,
+            server_default=sa.text("gen_random_uuid()"),
+            nullable=False,
         ),
         sa.Column(
             "user_id",
-            sa.Integer(),
+            postgresql.UUID(as_uuid=True),
             sa.ForeignKey(
                 "users.id",
                 ondelete="CASCADE",

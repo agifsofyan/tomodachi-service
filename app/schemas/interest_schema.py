@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -16,6 +18,6 @@ class InterestUpdate(BaseModel):
 
 
 class InterestResponse(InterestBase):
-    id: int
+    id: UUID
 
     model_config = ConfigDict(from_attributes=True)

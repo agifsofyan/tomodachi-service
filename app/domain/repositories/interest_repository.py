@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 from app.domain.entities.interest_entity import InterestEntity
 
 class InterestRepository(ABC):
@@ -6,13 +7,13 @@ class InterestRepository(ABC):
     @abstractmethod
     def create(self, interest: InterestEntity) -> InterestEntity:
         pass
-
+    
     @abstractmethod
-    def get_by_profile_id(self, profile_id: int) -> list[InterestEntity]:
+    def get_by_id(self, id: UUID) -> InterestEntity | None:
         pass
     
     @abstractmethod
-    def get_by_id(self, id: int) -> InterestEntity | None:
+    def get_by_ids(self, ids: list[UUID]) -> list[InterestEntity]:
         pass
     
     @abstractmethod
@@ -24,5 +25,5 @@ class InterestRepository(ABC):
         pass
     
     @abstractmethod
-    def delete(self, id: int) -> None:
+    def delete(self, id: UUID) -> None:
         pass

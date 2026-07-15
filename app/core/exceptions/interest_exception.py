@@ -3,6 +3,10 @@ from app.core.exceptions.base_exception import AppException
 class InterestNotFoundException(AppException):
     def __init__(self):
         super().__init__(status_code=404, message="Interest not found")
+        
+class InterestsNotFoundException(AppException):
+    def __init__(self):
+        super().__init__(status_code=404, message="One or more interests were not found.")
 
 
 class InterestAlreadyExistsException(AppException):
