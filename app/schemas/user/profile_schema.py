@@ -18,23 +18,24 @@ class ProfileBase(BaseModel):
     hobbies: list[str] = Field(default_factory=list, max_length=20)
     interests: list[UUID] = Field(default_factory=list, max_length=50)
     phone_numbers: list[str] = Field(default_factory=list, max_length=5)
-    
-    @field_validator('hobbies')
+
+    @field_validator("hobbies")
     @classmethod
     def validate_hobbies(cls, v: list[str]) -> list[str]:
         for hobby in v:
             if len(hobby) > 100:
-                raise ValueError('Each hobby must be at most 100 characters')
+                raise ValueError("Each hobby must be at most 100 characters")
         return v
-    
-    @field_validator('phone_numbers')
+
+    @field_validator("phone_numbers")
     @classmethod
     def validate_phone_numbers(cls, v: list[str]) -> list[str]:
         import re
-        phone_pattern = re.compile(r'^\+?[0-9]{10,15}$')
+
+        phone_pattern = re.compile(r"^\+?[0-9]{10,15}$")
         for phone in v:
             if not phone_pattern.match(phone):
-                raise ValueError(f'Invalid phone number format: {phone}')
+                raise ValueError(f"Invalid phone number format: {phone}")
         return v
 
 

@@ -1,19 +1,21 @@
 from uuid import UUID, uuid4
 
-from app.core.exceptions.interest_exception import InterestAlreadyExistsException, InterestNotFoundException
+from app.core.exceptions.interest_exception import (
+    InterestAlreadyExistsException,
+    InterestNotFoundException,
+)
 from app.domain.entities.interest_entity import InterestEntity
 from app.domain.repositories.interest_repository import InterestRepository
 from app.schemas.interest_schema import InterestCreate, InterestUpdate
 
 
 class InterestService:
-
     def __init__(self, repository: InterestRepository):
         self.repository = repository
 
     def create(self, request: InterestCreate) -> InterestEntity:
         existing = self.repository.get_all()
-        
+
         for interest in existing:
             if interest.code == request.code:
                 raise InterestAlreadyExistsException()

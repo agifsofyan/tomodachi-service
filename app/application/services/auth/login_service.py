@@ -1,9 +1,8 @@
 from app.core.security import verify_password
-from app.schemas.auth_schema import LoginRequest, AuthResponse
+from app.schemas.auth_schema import AuthResponse, LoginRequest
 
 
 class LoginService:
-
     def __init__(self, repository, token_service):
         self.repository = repository
         self.token_service = token_service
@@ -19,6 +18,4 @@ class LoginService:
 
         token = self.token_service.generate(str(user.id))
 
-        return AuthResponse(
-            access_token=token
-        )
+        return AuthResponse(access_token=token)

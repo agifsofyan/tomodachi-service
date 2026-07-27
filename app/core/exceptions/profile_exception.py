@@ -4,7 +4,6 @@ from app.core.exceptions.base_exception import AppException
 
 
 class ProfileAlreadyExistsException(AppException):
-
     def __init__(self):
         super().__init__(
             message="Profile already exists",
@@ -13,7 +12,6 @@ class ProfileAlreadyExistsException(AppException):
 
 
 class ProfileNotFoundException(AppException):
-
     def __init__(self):
         super().__init__(
             message="Profile not found.",

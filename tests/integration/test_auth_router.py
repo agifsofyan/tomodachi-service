@@ -10,8 +10,8 @@ def test_register_endpoint(client):
         json={
             "name": "Test User",
             "email": "test@example.com",
-            "password": "password123"
-        }
+            "password": "password123",
+        },
     )
     assert response.status_code == 200
     assert "access_token" in response.json()

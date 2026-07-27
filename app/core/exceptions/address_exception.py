@@ -1,8 +1,9 @@
 from fastapi import status
+
 from app.core.exceptions.base_exception import AppException
 
-class AddressAlreadyExistsException(AppException):
 
+class AddressAlreadyExistsException(AppException):
     def __init__(self):
         super().__init__(
             message="Address already exists.",
@@ -11,7 +12,6 @@ class AddressAlreadyExistsException(AppException):
 
 
 class AddressNotFoundException(AppException):
-
     def __init__(self):
         super().__init__(
             message="Address not found.",

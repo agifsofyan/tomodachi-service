@@ -1,11 +1,14 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
+
 from app.domain.entities.profile_entity import ProfileEntity
 
-class ProfileRepository(ABC):
 
+class ProfileRepository(ABC):
     @abstractmethod
-    def create(self, profile: ProfileEntity, interest_ids: list[UUID] | None = None) -> ProfileEntity:
+    def create(
+        self, profile: ProfileEntity, interest_ids: list[UUID] | None = None
+    ) -> ProfileEntity:
         pass
 
     @abstractmethod
@@ -13,9 +16,11 @@ class ProfileRepository(ABC):
         pass
 
     @abstractmethod
-    def update(self, profile: ProfileEntity, interest_ids: list[UUID] | None = None) -> ProfileEntity:
+    def update(
+        self, profile: ProfileEntity, interest_ids: list[UUID] | None = None
+    ) -> ProfileEntity:
         pass
-    
+
     @abstractmethod
     def delete(self, user_id: UUID) -> None:
         pass

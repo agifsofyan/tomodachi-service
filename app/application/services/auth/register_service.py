@@ -1,12 +1,12 @@
 from uuid import uuid4
 
 from app.core.exceptions.user_exception import UserAlreadyExistsException
-from app.domain.entities.user_entity import UserEntity
-from app.schemas.auth_schema import RegisterRequest, AuthResponse
 from app.core.security import hash_password
+from app.domain.entities.user_entity import UserEntity
+from app.schemas.auth_schema import AuthResponse, RegisterRequest
+
 
 class RegisterService:
-    
     def __init__(self, repository, token_service):
         self.repository = repository
         self.token_service = token_service
@@ -18,16 +18,11 @@ class RegisterService:
 
         hashed_password = hash_password(request.password)
         new_user = UserEntity(
-            id=uuid4(),
-            name=request.name, 
-            email=request.email, 
-            password=hashed_password
+            id=uuid4(), name=request.name, email=request.email, password=hashed_password
         )
-        
+
         saved_user = self.repository.save(new_user)
-        
+
         token = self.token_service.generate(str(saved_user.id))
 
-        return AuthResponse(
-            access_token=token
-        )
+        return AuthResponse(access_token=token)

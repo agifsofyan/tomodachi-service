@@ -5,17 +5,19 @@ Revises: e4a2e37f011b
 Create Date: 2026-07-15 09:14:33.799935
 
 """
-from typing import Sequence, Union
 
-from alembic import op
+from collections.abc import Sequence
+
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
+
 # revision identifiers, used by Alembic.
-revision: str = 'a34968e6fdce'
-down_revision: Union[str, Sequence[str], None] = 'e4a2e37f011b'
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+revision: str = "a34968e6fdce"
+down_revision: str | Sequence[str] | None = "e4a2e37f011b"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -52,14 +54,13 @@ def upgrade() -> None:
             nullable=False,
             server_default=sa.func.now(),
         ),
-        
         sa.PrimaryKeyConstraint(
             "profile_id",
             "interest_id",
             name="pk_profiles_interests",
         ),
     )
-    
+
     op.create_index(
         "ix_profiles_interests_profile_id",
         "profiles_interests",
@@ -79,7 +80,7 @@ def downgrade() -> None:
         "ix_profiles_interests_profile_id",
         table_name="profiles_interests",
     )
-    
+
     op.drop_index(
         "ix_profiles_interests_interest_id",
         table_name="profiles_interests",

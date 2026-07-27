@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
+
 from app.schemas.user.address_schema import AddressResponse
 from app.schemas.user.profile_schema import ProfileResponse
 
@@ -9,9 +10,10 @@ class UserResponse(BaseModel):
     id: UUID
     email: str
     name: str
-    
+
     model_config = ConfigDict(from_attributes=True)
-    
+
+
 class UserWithProfileResponse(BaseModel):
     id: UUID
     email: str
@@ -19,7 +21,8 @@ class UserWithProfileResponse(BaseModel):
     profile: ProfileResponse | None = None
 
     model_config = ConfigDict(from_attributes=True)
-    
+
+
 class UserWithProfileAndAddressResponse(BaseModel):
     id: UUID
     email: str

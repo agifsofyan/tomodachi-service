@@ -5,17 +5,19 @@ Revises: c59d57e90573
 Create Date: 2026-07-15 09:13:58.340812
 
 """
-from typing import Sequence, Union
 
-from alembic import op
+from collections.abc import Sequence
+
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
+
 # revision identifiers, used by Alembic.
-revision: str = 'e4a2e37f011b'
-down_revision: Union[str, Sequence[str], None] = 'c59d57e90573'
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+revision: str = "e4a2e37f011b"
+down_revision: str | Sequence[str] | None = "c59d57e90573"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -35,12 +37,7 @@ def upgrade() -> None:
             sa.String(length=100),
             nullable=False,
         ),
-        sa.Column(
-            "code",
-            sa.String(length=50),
-            nullable=False,
-            unique=True
-        ),
+        sa.Column("code", sa.String(length=50), nullable=False, unique=True),
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),

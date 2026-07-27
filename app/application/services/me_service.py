@@ -10,7 +10,6 @@ from app.schemas.user.user_schema import UserWithProfileAndAddressResponse
 
 
 class UserService:
-
     def __init__(
         self,
         user_repository: UserRepository,
@@ -21,7 +20,9 @@ class UserService:
         self.profile_repository = profile_repository
         self.address_repository = address_repository
 
-    def me(self, user_id: UUID, include_address: bool) -> UserWithProfileAndAddressResponse:
+    def me(
+        self, user_id: UUID, include_address: bool
+    ) -> UserWithProfileAndAddressResponse:
         user = self.user_repository.get_by_id(user_id)
 
         if user is None:
@@ -33,18 +34,13 @@ class UserService:
             id=user.id,
             email=user.email,
             name=user.name,
-            profile=(
-                ProfileResponse.model_validate(profile)
-                if profile
-                else None
-            ),
+            profile=(ProfileResponse.model_validate(profile) if profile else None),
         )
-        
+
         if include_address is True:
             addresses = self.address_repository.get_by_user_id(user_id)
             result.address = [
-                AddressResponse.model_validate(address)
-                for address in addresses
+                AddressResponse.model_validate(address) for address in addresses
             ]
-        
+
         return result

@@ -2,22 +2,23 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
+
 class AddressBase(BaseModel):
-    province_code: str    # Provinsi
-    province_name: str    # Provinsi
-    regency_code: str     # Kota/Kabupaten
-    regency_name: str     # Kota/Kabupaten
-    subdistrict_code: str # Kecamatan
-    subdistrict_name: str # Kecamatan
-    village_code: str     # Kelurahan
-    village_name: str     # Kelurahan
-    full_address: str     # Full Address
+    province_code: str  # Provinsi
+    province_name: str  # Provinsi
+    regency_code: str  # Kota/Kabupaten
+    regency_name: str  # Kota/Kabupaten
+    subdistrict_code: str  # Kecamatan
+    subdistrict_name: str  # Kecamatan
+    village_code: str  # Kelurahan
+    village_name: str  # Kelurahan
+    full_address: str  # Full Address
     postal_code: str = Field(
         min_length=5,
         max_length=5,
-        pattern=r"^\d{5}$",    
-    ) # Kode POS
-    
+        pattern=r"^\d{5}$",
+    )  # Kode POS
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -30,7 +31,7 @@ class AddressBase(BaseModel):
                 "village_code": "33.09.14.2006",
                 "village_name": "Tegalsari",
                 "full_address": "Tegalsari RT/RW 01/03, Kec. Karanggede, Kab. Boyolali",
-                "postal_code": "57381"
+                "postal_code": "57381",
             }
         }
     )

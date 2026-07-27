@@ -2,7 +2,6 @@ from fastapi import status
 
 
 class AppException(Exception):
-
     def __init__(
         self,
         message: str,

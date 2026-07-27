@@ -1,17 +1,21 @@
 from uuid import UUID, uuid4
 
 from app.core.exceptions.interest_exception import InterestsNotFoundException
+from app.core.exceptions.profile_exception import (
+    ProfileAlreadyExistsException,
+    ProfileNotFoundException,
+)
 from app.domain.entities.interest_entity import InterestEntity
 from app.domain.entities.profile_entity import ProfileEntity
-from app.domain.repositories.profile_repository import ProfileRepository
 from app.domain.repositories.interest_repository import InterestRepository
-from app.core.exceptions.profile_exception import ProfileAlreadyExistsException, ProfileNotFoundException
+from app.domain.repositories.profile_repository import ProfileRepository
 from app.schemas.user.profile_schema import ProfileCreate, ProfileUpdate
 
 
 class ProfileService:
-
-    def __init__(self, repository: ProfileRepository, interestRepository: InterestRepository):
+    def __init__(
+        self, repository: ProfileRepository, interestRepository: InterestRepository
+    ):
         self.repository = repository
         self.interestRepository = interestRepository
 
@@ -26,11 +30,7 @@ class ProfileService:
 
         return interests
 
-    def create(
-        self,
-        user_id: UUID,
-        request: ProfileCreate
-    ) -> ProfileEntity:
+    def create(self, user_id: UUID, request: ProfileCreate) -> ProfileEntity:
 
         existing = self.repository.get_by_user_id(user_id)
 
@@ -45,7 +45,7 @@ class ProfileService:
             hobbies=request.hobbies,
             phone_numbers=request.phone_numbers,
         )
-        
+
         self.interest_validate(request.interests)
 
         return self.repository.create(profile, interest_ids=request.interests)
@@ -59,11 +59,7 @@ class ProfileService:
 
         return profile
 
-    def update(
-        self,
-        user_id: UUID,
-        request: ProfileUpdate
-    ) -> ProfileEntity:
+    def update(self, user_id: UUID, request: ProfileUpdate) -> ProfileEntity:
 
         profile = self.repository.get_by_user_id(user_id)
 

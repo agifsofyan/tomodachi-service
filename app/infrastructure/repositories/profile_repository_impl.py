@@ -1,17 +1,21 @@
 from uuid import UUID
 
+from sqlalchemy.orm import Session, joinedload
+
 from app.domain.entities.interest_entity import InterestEntity
 from app.domain.entities.profile_entity import ProfileEntity
 from app.domain.repositories.profile_repository import ProfileRepository
-from app.infrastructure.db.models.profile_model import ProfileModel
 from app.infrastructure.db.models.profile_interest_model import ProfileInterestModel
-from sqlalchemy.orm import Session, joinedload
+from app.infrastructure.db.models.profile_model import ProfileModel
+
 
 class ProfileRepositoryImpl(ProfileRepository):
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, profile: ProfileEntity, interest_ids: list[UUID] | None = None) -> ProfileEntity:
+    def create(
+        self, profile: ProfileEntity, interest_ids: list[UUID] | None = None
+    ) -> ProfileEntity:
         db_profile = ProfileModel(
             id=profile.id,
             gender=profile.gender,
@@ -23,37 +27,32 @@ class ProfileRepositoryImpl(ProfileRepository):
         self.db.add(db_profile)
         self.db.commit()
         self.db.refresh(db_profile)
-        
+
         if interest_ids:
             for interest_id in interest_ids:
                 profile_interest = ProfileInterestModel(
-                    profile_id=db_profile.id,
-                    interest_id=interest_id
+                    profile_id=db_profile.id, interest_id=interest_id
                 )
-                
+
                 self.db.add(profile_interest)
                 self.db.commit()
                 self.db.refresh(db_profile)
-                
+
         interests = [
-            InterestEntity(
-                id=interest.id,
-                name=interest.name,
-                code=interest.code
-            )
+            InterestEntity(id=interest.id, name=interest.name, code=interest.code)
             for interest in db_profile.interests
         ]
-        
+
         return ProfileEntity(
-            id=db_profile.id, 
+            id=db_profile.id,
             gender=db_profile.gender,
             user_id=db_profile.user_id,
             birth_date=db_profile.birth_date,
             hobbies=db_profile.hobbies,
             phone_numbers=db_profile.phone_numbers,
-            interests=interests               
+            interests=interests,
         )
-        
+
     def get_by_user_id(self, user_id: UUID) -> ProfileEntity | None:
         profile_model = (
             self.db.query(ProfileModel)
@@ -65,11 +64,7 @@ class ProfileRepositoryImpl(ProfileRepository):
             return None
         # Convert interests to InterestEntity entities
         interests = [
-            InterestEntity(
-                id=interest.id,
-                name=interest.name,
-                code=interest.code
-            )
+            InterestEntity(id=interest.id, name=interest.name, code=interest.code)
             for interest in profile_model.interests
         ]
         return ProfileEntity(
@@ -79,14 +74,14 @@ class ProfileRepositoryImpl(ProfileRepository):
             birth_date=profile_model.birth_date,
             hobbies=profile_model.hobbies,
             phone_numbers=profile_model.phone_numbers,
-            interests=interests  # ← ADD THIS
-    )
+            interests=interests,  # ← ADD THIS
+        )
 
-    def update(self, profile: ProfileEntity, interest_ids: list[UUID] | None = None) -> ProfileEntity:
+    def update(
+        self, profile: ProfileEntity, interest_ids: list[UUID] | None = None
+    ) -> ProfileEntity:
         profile_model = (
-            self.db.query(ProfileModel)
-            .filter(ProfileModel.id == profile.id)
-            .first()
+            self.db.query(ProfileModel).filter(ProfileModel.id == profile.id).first()
         )
 
         if profile_model is None:
@@ -98,28 +93,23 @@ class ProfileRepositoryImpl(ProfileRepository):
         profile_model.phone_numbers = profile.phone_numbers
 
         self.db.commit()
-        
+
         if interest_ids is not None:
             self.db.query(ProfileInterestModel).filter(
                 ProfileInterestModel.profile_id == profile.id
             ).delete(synchronize_session=False)
-            
+
             for interest_id in interest_ids:
                 profile_interest = ProfileInterestModel(
-                    profile_id=profile.id,
-                    interest_id=interest_id
+                    profile_id=profile.id, interest_id=interest_id
                 )
                 self.db.add(profile_interest)
                 self.db.commit()
-        
+
         self.db.refresh(profile_model)
-        
+
         interests = [
-            InterestEntity(
-                id=interest.id,
-                name=interest.name,
-                code=interest.code
-            )
+            InterestEntity(id=interest.id, name=interest.name, code=interest.code)
             for interest in profile_model.interests
         ]
 
@@ -130,14 +120,12 @@ class ProfileRepositoryImpl(ProfileRepository):
             birth_date=profile_model.birth_date,
             hobbies=profile_model.hobbies,
             phone_numbers=profile_model.phone_numbers,
-            interests=interests
+            interests=interests,
         )
 
     def delete(self, user_id: UUID) -> None:
         profile = (
-            self.db.query(ProfileModel)
-            .filter(ProfileModel.user_id == user_id)
-            .first()
+            self.db.query(ProfileModel).filter(ProfileModel.user_id == user_id).first()
         )
 
         if profile is None:
