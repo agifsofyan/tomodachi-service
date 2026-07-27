@@ -1,14 +1,14 @@
 """FastAPI Application Entry Point"""
 
+import logging
+import sys
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.api import api_router
 from app.core.config import settings
 from app.core.exceptions.handlers import register_exception_handlers
-
-import logging
-import sys
 
 logging.basicConfig(
     level=logging.INFO,
