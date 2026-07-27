@@ -1,6 +1,12 @@
+
+import logging
+
+from app.core.exceptions.auth_exception import PasswordNotMatchException
+from app.core.exceptions.user_exception import UserNotFoundException
 from app.core.security import verify_password
 from app.schemas.auth_schema import AuthResponse, LoginRequest
 
+logger = logging.getLogger(__name__)
 
 class LoginService:
     def __init__(self, repository, token_service):
@@ -11,10 +17,10 @@ class LoginService:
         user = self.repository.get_by_email(request.email)
 
         if user is None:
-            raise ValueError("Invalid email or password")
+            raise UserNotFoundException
 
         if not verify_password(request.password, user.password):
-            raise ValueError("Invalid email or password")
+            raise PasswordNotMatchException
 
         token = self.token_service.generate(str(user.id))
 

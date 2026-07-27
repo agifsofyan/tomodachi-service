@@ -7,6 +7,15 @@ from app.api.v1.api import api_router
 from app.core.config import settings
 from app.core.exceptions.handlers import register_exception_handlers
 
+import logging
+import sys
+
+logging.basicConfig(
+    level=logging.INFO,
+    stream=sys.stdout,
+    force=True,  # Python >=3.8
+)
+
 app = FastAPI(
     title=settings.PROJECT_NAME
     if hasattr(settings, "PROJECT_NAME")
@@ -17,10 +26,7 @@ app = FastAPI(
 
 register_exception_handlers(app)
 
-origins = [
-    "http://localhost:3000",  # React
-    "http://localhost:5173",  # Vite
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
