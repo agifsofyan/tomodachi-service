@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
 COPY pyproject.toml uv.lock ./
 
@@ -15,7 +15,10 @@ COPY . .
 
 ENV PATH="/app/.venv/bin:$PATH"
 
+COPY --chown=appuser:appuser . .
 RUN chmod +x deployment/start.sh
+
+USER appuser
 
 EXPOSE 8000
 

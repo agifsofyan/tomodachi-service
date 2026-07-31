@@ -25,6 +25,7 @@ def create_access_token(subject: str) -> str:
     payload = {
         "sub": subject,
         "exp": expire,
+        "iat": datetime.now(UTC),
     }
 
     return jwt.encode(
